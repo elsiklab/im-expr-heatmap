@@ -7,18 +7,19 @@ library(reshape2)
 
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args)<1) {
-    stop("Usage: intermine2heatmap input.tsv output.png")
+if(length(args)<2) {
+    stop("Usage: intermine2heatmap input.tsv \"plot title\" output.png")
 }
 
 
 x=fread(args[1])
-setnames(x,c("geneid","transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
+setnames(x,c("transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
 
 
 z=acast(x,transcriptid~tissue,value.var="fpkm")
-filename=ifelse(length(args)>=2,args[2],'example.png')
+filename=ifelse(length(args)>=3,args[3],'example.png')
 
 png(filename,width=2500,height=2500)
-heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(20, 30),col=redgreen(75))
+par(cex.main=4)
+heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(30, 30),col=redgreen(75),main=args[2])
 dev.off()
