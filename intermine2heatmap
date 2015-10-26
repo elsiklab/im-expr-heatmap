@@ -1,0 +1,26 @@
+#!/usr/bin/env Rscript
+
+
+library(gplots)
+library(data.table)
+library(reshape2)
+
+
+args <- commandArgs(trailingOnly = TRUE)
+if(length(args)<1) {
+    stop("Usage: intermine2heatmap input.tsv output.png")
+}
+
+
+x=fread(args[1])
+setnames(x,c("geneid","transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
+
+
+y=dcast(x,transcriptid~tissue,value.var="fpkm")
+z=data.matrix(y[,-1])
+rownames(z)<-y[,1]
+filename=ifelse(length(args)>=2,args[2],'example.png')
+
+png(filename,width=2500,height=2500)
+heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(10, 30))
+dev.off()
