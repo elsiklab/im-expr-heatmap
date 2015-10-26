@@ -16,11 +16,9 @@ x=fread(args[1])
 setnames(x,c("geneid","transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
 
 
-y=dcast(x,transcriptid~tissue,value.var="fpkm")
-z=data.matrix(y[,-1])
-rownames(z)<-y[,1]
+z=acast(x,transcriptid~tissue,value.var="fpkm")
 filename=ifelse(length(args)>=2,args[2],'example.png')
 
 png(filename,width=2500,height=2500)
-heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(10, 30))
+heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(20, 30),col=redgreen(75))
 dev.off()
