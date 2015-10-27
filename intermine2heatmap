@@ -7,8 +7,8 @@ library(reshape2)
 
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args)<2) {
-    stop("Usage: intermine2heatmap input.txt [output.html]")
+if(length(args)<1) {
+    stop("Usage: intermine2heatmap input.txt output.html")
 }
 
 
@@ -17,10 +17,10 @@ setnames(x,c("transcriptid","sra","sample_name","tissue","brenda","fpkm","normal
 
 
 z=acast(x,transcriptid~tissue,value.var="fpkm")
-filename=ifelse(length(args)>=3,args[3],'output.html')
+filename=ifelse(length(args)>=2,args[2],'output.html')
 
-widget=d3heatmap(log(z+1))
-saveWidet(widget,file=filename)
-
+mat=log(z+1)
+widget=d3heatmap(mat)
+htmlwidgets::saveWidget(widget,file=filename)
 
 
