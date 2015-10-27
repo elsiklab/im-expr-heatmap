@@ -1,0 +1,24 @@
+#!/usr/bin/env Rscript
+
+
+library(data.table)
+library(reshape2)
+
+
+args <- commandArgs(trailingOnly = TRUE)
+if(length(args)<1) {
+    stop("Usage: intermine2clusters input.txt clusters.txt")
+}
+
+x=fread(args[1])
+setnames(x,c("transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
+z=acast(x,transcriptid~tissue,value.var="fpkm")
+mat=log(z+1)
+d=dist(mat)
+print(nrow(mat))
+tree=hclust(d)
+filename=ifelse(length(args)>=2,args[2],'clusters.txt')
+clusters=ifelse(length(args)>=3,as.numeric(args[3]),3)
+write.table(cutree(tree, k = clusters),filename,sep='\t',quote=F)
+
+
