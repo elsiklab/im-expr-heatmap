@@ -7,7 +7,7 @@ library(reshape2)
 
 args <- commandArgs(trailingOnly = TRUE)
 if(length(args)<1) {
-    stop("Usage: intermine2clusters input.txt clusters.txt")
+    stop("Usage: intermine2clusters input.txt clusters_output_prefix num_clusters")
 }
 
 x=fread(args[1])
@@ -17,8 +17,10 @@ mat=log(z+1)
 d=dist(mat)
 print(nrow(mat))
 tree=hclust(d)
-filename=ifelse(length(args)>=2,args[2],'clusters.txt')
+filename=ifelse(length(args)>=2,paste(args[2],'.txt',sep=''),'clusters.txt')
 clusters=ifelse(length(args)>=3,as.numeric(args[3]),3)
 write.table(cutree(tree, k = clusters),filename,sep='\t',quote=F)
-
-
+filename=ifelse(length(args)>=2,paste(args[2],'.png',sep=''),'clusters.png')
+png(filename)
+plot(tree)
+dev.off()
