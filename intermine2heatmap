@@ -4,6 +4,7 @@
 library(d3heatmap)
 library(data.table)
 library(reshape2)
+library(gplots)
 
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -14,13 +15,19 @@ if(length(args)<1) {
 
 x=fread(args[1])
 setnames(x,c("transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
-
-
 z=acast(x,transcriptid~tissue,value.var="fpkm")
+z=log(z+1)
+
+
 filename=ifelse(length(args)>=2,args[2],'output.html')
+if(file_ext(args[2])=="html") {
+    widget=d3heatmap(z)
+    htmlwidgets::saveWidget(widget,file=filename)
+}
 
-mat=log(z+1)
-widget=d3heatmap(mat)
-htmlwidgets::saveWidget(widget,file=filename)
-
-
+else {
+    png(filename,width=2500,height=2500)
+    par(cex.main=4)
+    heatmap.2(t(log(z+1)),trace="none",density.info="none",cexRow=2,cexCol=2,margins = c(30, 30),col=redgreen(75),main=filename)
+    dev.off()
+}
