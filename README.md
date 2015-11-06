@@ -54,12 +54,6 @@ This will generate `clusters_filename_prefix.txt` and `clusters_filename_prefix.
 
 
 
-### d3heatmap
-
-
-![](img/d3.html)
-
-
 
 ### Cluster tree
 
