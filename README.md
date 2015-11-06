@@ -30,7 +30,7 @@ Usage is amenable for intermine expression data outputs
 
 Generate a heatmap
 
-    intermine2heatmap input.tsv output.png|pdf|html "title"
+    intermine2heatmap input.txt output.png|pdf|html "title"
 
 This will output a png, pdf or html page with your output. PDF/PNG powered by heatmap.2, HTML powered by d3heatmap
 
@@ -38,9 +38,9 @@ This will output a png, pdf or html page with your output. PDF/PNG powered by he
 
 This will output a text file with the clusters
 
-    intermine2clusters input.tsv clusters_filename_prefix num_clusters
+    intermine2clusters input.txt clust 4
 
-This will generate `clusters_filename_prefix.txt` and `clusters_filename_prefix.png`
+This will generate clust.txt and clust.png clustered into 4 groups
 
 
 
