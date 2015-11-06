@@ -11,7 +11,7 @@ if(length(args)<1) {
 }
 
 x=fread(args[1])
-setnames(x,c("transcriptid","sra","sample_name","tissue","brenda","fpkm","normalized_counts","raw_counts"))
+setnames(x,c("transcriptid","tissue","fpkm"))
 z=acast(x,transcriptid~tissue,value.var="fpkm")
 mat=log(z+1)
 d=dist(mat)
